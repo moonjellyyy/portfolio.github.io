@@ -85,7 +85,7 @@ hr.divider {
 }
 
 .logo-link:hover {
-  text-decoration: none !important; /* Removes logo underline on hover */
+  text-decoration: none !important;
 }
 
 .bio {
@@ -176,7 +176,6 @@ hr.divider {
 }
 
 video.gallery-image {
-  pointer-events: none; 
   object-fit: cover;    
   width: 100%;
   height: 100%;
@@ -273,7 +272,9 @@ video.gallery-image {
    PROJECT A: Specific Layout
    ========================================= */
 .project-a .gallery {
-  grid-template-columns: 1fr 1fr; 
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  overflow: hidden;
 }
 .project-a .gallery-image:nth-child(3) {
   grid-column: 1 / -1; 
@@ -416,8 +417,8 @@ video.gallery-image {
   transform: scale(0.6666); 
   transform-origin: top left; 
   border: none; 
-  overflow-x: hidden; /* Locks horizontal scrolling */
-  overflow-y: auto;   /* Allows vertical scrolling */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 #home-close-btn {
@@ -431,7 +432,7 @@ video.gallery-image {
   
   /* 1. GLOBAL MOBILE FIXES */
   body, html { 
-    overflow-x: hidden; /* Stops the entire webpage from swaying left and right */
+    overflow-x: hidden;
   }
   
   body { 
@@ -466,7 +467,6 @@ video.gallery-image {
     margin-top: -20px;
   }
   
-  /* Reset the gap for mobile phones */
   .contact a:nth-child(2),
   .nav a:nth-child(2) {
     margin-top: 4px; 
@@ -474,21 +474,21 @@ video.gallery-image {
   
   .bio { max-width: 100%; }
   .project-container {
-  display: flex;
-  flex-direction: column; 
-  gap: var(--gutter);
-  padding: 16px 0 32px 0; 
-}
+    display: flex;
+    flex-direction: column; 
+    gap: var(--gutter);
+    padding: 16px 0 32px 0; 
+  }
   
   .info-panel {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 12px !important;
-  height: auto;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto; 
-}
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    height: auto;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto; 
+  }
   
   .project-title { align-self: center; } 
   .project-details { padding-left: 0; } 
@@ -519,14 +519,11 @@ video.gallery-image {
   
   .project-letter { 
     font-size: 50.4px; 
-    width: 100%; /* Fixes the short underline bug */
+    width: 100%;
   }
   
   .back-link, .tag, .filter-label, .filter-btn { font-size: 13px; }
 
-  /* Full screen overlay on mobile */
-
-  /* Show Home button on mobile */
   #home-close-btn {
     display: inline-block;
     margin-bottom: 4px !important;
@@ -542,24 +539,28 @@ video.gallery-image {
     padding: 16px 12px 150px 12px;
   }
 
-  .about-grid { grid-template-columns: 1fr; 
-                gap:12px;}
+  .about-grid { 
+    grid-template-columns: 1fr; 
+    gap: 12px;
+  }
 
-  /* =========================================
-     PROJECT I: Mobile Native View
-     ========================================= */
-  
+  /* PROJECT I: Mobile Native View */
   .project-i .iframe-container {
     aspect-ratio: 9 / 16 !important; 
-    overflow-x: hidden !important; /* Strictly locks horizontal overflow */
+    overflow-x: hidden !important;
     max-width: 100vw;
   }
 
   .project-i .iframe-container iframe.gallery-iframe {
     width: 100% !important; 
-    max-width: 100% !important; /* Forces mobile Safari to obey the width */
+    max-width: 100% !important;
     height: 100% !important; 
     transform: none !important; 
+  }
+
+  /* DISABLE LIGHTBOX ON MOBILE */
+  .lightbox {
+    display: none !important;
   }
 }
 
@@ -578,3 +579,81 @@ video.gallery-image {
   mix-blend-mode: multiply; 
   text-decoration: none; 
 }
+
+/* =========================================
+   LIGHTBOX
+   ========================================= */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(255, 255, 255, 0.50);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+/* Centre stage — white box that hugs the media */
+.lightbox-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: calc(100vw - 160px);
+  max-height: 94vh;
+}
+
+.lightbox-media-wrap {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 92vh;
+  max-width: 100%;
+}
+
+/* The image/video itself */
+.lightbox-media {
+  display: block;
+  max-height: 92vh;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Close button (top-right) */
+.lightbox-close {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  z-index: 2100;
+  line-height: 1;
+  padding: 4px 8px;
+}
+
+/* Left / right arrows */
+.lightbox-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  z-index: 2100;
+  padding: 0 20px;
+  line-height: 1;
+  user-select: none;
+}
+.lightbox-prev { left: 0; }
+.lightbox-next { right: 0; }
