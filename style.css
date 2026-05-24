@@ -273,8 +273,7 @@ video.gallery-image {
    ========================================= */
 .project-a .gallery {
   grid-template-columns: 1fr 1fr;
-  height: 100vh;
-  overflow: hidden;
+  
 }
 .project-a .gallery-image:nth-child(3) {
   grid-column: 1 / -1; 
